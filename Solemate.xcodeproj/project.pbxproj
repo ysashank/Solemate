@@ -7,19 +7,24 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		307E61832DC0F4150086FF27 /* Solemate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solemate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		30594FA72E645D3000FC4CA8 /* Solemate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Solemate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		307E61852DC0F4150086FF27 /* Solemate */ = {
+		30594FA92E645D3000FC4CA8 /* Solemate */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Solemate;
+			sourceTree = "<group>";
+		};
+		3059500F2E64740700FC4CA8 /* Audio */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		307E61802DC0F4150086FF27 /* Frameworks */ = {
+		30594FA42E645D3000FC4CA8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -29,18 +34,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		307E617A2DC0F4150086FF27 = {
+		30594F9E2E645D3000FC4CA8 = {
 			isa = PBXGroup;
 			children = (
-				307E61852DC0F4150086FF27 /* Solemate */,
-				307E61842DC0F4150086FF27 /* Products */,
+				30594FA92E645D3000FC4CA8 /* Solemate */,
+				30594FA82E645D3000FC4CA8 /* Products */,
+				3059500F2E64740700FC4CA8 /* Audio */,
 			);
 			sourceTree = "<group>";
 		};
-		307E61842DC0F4150086FF27 /* Products */ = {
+		30594FA82E645D3000FC4CA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				307E61832DC0F4150086FF27 /* Solemate.app */,
+				30594FA72E645D3000FC4CA8 /* Solemate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,64 +54,65 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		307E61822DC0F4150086FF27 /* Solemate */ = {
+		30594FA62E645D3000FC4CA8 /* Solemate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 307E618F2DC0F4170086FF27 /* Build configuration list for PBXNativeTarget "Solemate" */;
+			buildConfigurationList = 30594FB32E645D3200FC4CA8 /* Build configuration list for PBXNativeTarget "Solemate" */;
 			buildPhases = (
-				307E617F2DC0F4150086FF27 /* Sources */,
-				307E61802DC0F4150086FF27 /* Frameworks */,
-				307E61812DC0F4150086FF27 /* Resources */,
+				30594FA32E645D3000FC4CA8 /* Sources */,
+				30594FA42E645D3000FC4CA8 /* Frameworks */,
+				30594FA52E645D3000FC4CA8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				307E61852DC0F4150086FF27 /* Solemate */,
+				30594FA92E645D3000FC4CA8 /* Solemate */,
+				3059500F2E64740700FC4CA8 /* Audio */,
 			);
 			name = Solemate;
 			packageProductDependencies = (
 			);
-			productName = PlantarRoutine;
-			productReference = 307E61832DC0F4150086FF27 /* Solemate.app */;
+			productName = Solemate;
+			productReference = 30594FA72E645D3000FC4CA8 /* Solemate.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		307E617B2DC0F4150086FF27 /* Project object */ = {
+		30594F9F2E645D3000FC4CA8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1630;
-				LastUpgradeCheck = 1630;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					307E61822DC0F4150086FF27 = {
-						CreatedOnToolsVersion = 16.3;
+					30594FA62E645D3000FC4CA8 = {
+						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = 307E617E2DC0F4150086FF27 /* Build configuration list for PBXProject "Solemate" */;
+			buildConfigurationList = 30594FA22E645D3000FC4CA8 /* Build configuration list for PBXProject "Solemate" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 307E617A2DC0F4150086FF27;
+			mainGroup = 30594F9E2E645D3000FC4CA8;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 307E61842DC0F4150086FF27 /* Products */;
+			productRefGroup = 30594FA82E645D3000FC4CA8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				307E61822DC0F4150086FF27 /* Solemate */,
+				30594FA62E645D3000FC4CA8 /* Solemate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		307E61812DC0F4150086FF27 /* Resources */ = {
+		30594FA52E645D3000FC4CA8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -115,7 +122,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		307E617F2DC0F4150086FF27 /* Sources */ = {
+		30594FA32E645D3000FC4CA8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -125,7 +132,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		307E618D2DC0F4170086FF27 /* Debug */ = {
+		30594FB12E645D3200FC4CA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -160,6 +167,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = W26U632XZV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -186,7 +194,7 @@
 			};
 			name = Debug;
 		};
-		307E618E2DC0F4170086FF27 /* Release */ = {
+		30594FB22E645D3200FC4CA8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -221,6 +229,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = W26U632XZV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -239,21 +248,19 @@
 			};
 			name = Release;
 		};
-		307E61902DC0F4170086FF27 /* Debug */ = {
+		30594FB42E645D3200FC4CA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solemate/Solemate.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W26U632XZV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Solemate;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We use Apple Health to log your workout history.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app saves stretching sessions to your Apple Health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We write workout data so your sessions appear in the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -264,39 +271,36 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sy.Solemate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.4;
+				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
 		};
-		307E61912DC0F4170086FF27 /* Release */ = {
+		30594FB52E645D3200FC4CA8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Solemate/Solemate.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W26U632XZV;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Solemate;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We use Apple Health to log your workout history.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app saves stretching sessions to your Apple Health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We write workout data so your sessions appear in the Health app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -307,46 +311,45 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sy.Solemate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.4;
+				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		307E617E2DC0F4150086FF27 /* Build configuration list for PBXProject "Solemate" */ = {
+		30594FA22E645D3000FC4CA8 /* Build configuration list for PBXProject "Solemate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				307E618D2DC0F4170086FF27 /* Debug */,
-				307E618E2DC0F4170086FF27 /* Release */,
+				30594FB12E645D3200FC4CA8 /* Debug */,
+				30594FB22E645D3200FC4CA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		307E618F2DC0F4170086FF27 /* Build configuration list for PBXNativeTarget "Solemate" */ = {
+		30594FB32E645D3200FC4CA8 /* Build configuration list for PBXNativeTarget "Solemate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				307E61902DC0F4170086FF27 /* Debug */,
-				307E61912DC0F4170086FF27 /* Release */,
+				30594FB42E645D3200FC4CA8 /* Debug */,
+				30594FB52E645D3200FC4CA8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 307E617B2DC0F4150086FF27 /* Project object */;
+	rootObject = 30594F9F2E645D3000FC4CA8 /* Project object */;
 }
