@@ -1,51 +1,35 @@
-//
-//  Health.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import HealthKit
 
+@MainActor
 enum Health {
     static let store = HKHealthStore()
     private static var askedOnce = false
-    private static var canShareWorkouts = false
 
     static func ensureAuthorizationIfNeeded() {
-        // Simulator/device without Health → skip silently
-        guard HKHealthStore.isHealthDataAvailable() else { return }
-        guard !askedOnce else { return }
+        guard HKHealthStore.isHealthDataAvailable(), !askedOnce else { return }
         askedOnce = true
-
-        let toShare: Set = [HKObjectType.workoutType()]
         DispatchQueue.main.async {
-            store.requestAuthorization(toShare: toShare, read: []) { success, _ in
-                canShareWorkouts = success
+            store.requestAuthorization(toShare: [HKObjectType.workoutType()], read: []) { _, _ in }
+        }
+    }
+
+    nonisolated static func storeCompletedWorkout(start: Date, end: Date) {
+        let store = HKHealthStore()
+        guard HKHealthStore.isHealthDataAvailable(),
+              store.authorizationStatus(for: HKObjectType.workoutType()) == .sharingAuthorized else { return }
+        let configuration = HKWorkoutConfiguration()
+        configuration.activityType = .flexibility
+        let builder = HKWorkoutBuilder(healthStore: store, configuration: configuration, device: .local())
+        builder.beginCollection(withStart: start) { success, error in
+            guard success else { return log(error) }
+            builder.endCollection(withEnd: end) { success, error in
+                guard success else { return log(error) }
+                builder.finishWorkout { _, error in log(error) }
             }
         }
     }
 
-    static func storeCompletedWorkout(duration: Int) {
-        guard canShareWorkouts else { return }
-        let active = max(0, duration)
-        let start = Date().addingTimeInterval(TimeInterval(-active))
-        let end = Date()
-        
-        let configuration = HKWorkoutConfiguration()
-        configuration.activityType = .flexibility
-        
-        let builder = HKWorkoutBuilder(healthStore: store, configuration: configuration, device: .local())
-        builder.beginCollection(withStart: start) { success, error in
-            guard success else { return }
-            
-            builder.endCollection(withEnd: end) { success, error in
-                guard success else { return }
-                
-                builder.finishWorkout { workout, error in
-                    // Silent per product ethos - workout saved or failed silently
-                }
-            }
-        }
+    nonisolated private static func log(_ error: Error?) {
+        if let error { print("Health: \(error)") }
     }
 }

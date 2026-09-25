@@ -1,17 +1,9 @@
-//
-//  Ritual.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import Foundation
 
 enum Ritual {
     static let exercises: [Exercise] = [
         Exercise(
             title: "Plantar Arch Stretch",
-            subtitle: "2 sets per side • 30s",
             sets: 2, reps: nil, holdSeconds: 30, perSide: true,
             steps: [
                 "Sit and cross ankle over knee",
@@ -22,7 +14,6 @@ enum Ritual {
         ),
         Exercise(
             title: "Toe Spread + Curl",
-            subtitle: "1 set • 5 reps • 5s",
             sets: 1, reps: 5, holdSeconds: 5, perSide: true,
             steps: [
                 "Spread toes wide, hold",
@@ -32,7 +23,6 @@ enum Ritual {
         ),
         Exercise(
             title: "Toe Drawing (A–E)",
-            subtitle: "1 set • 60s",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
                 "Lift foot off ground",
@@ -43,7 +33,6 @@ enum Ritual {
         ),
         Exercise(
             title: "Short Foot Drill",
-            subtitle: "2 sets • 5 reps • 5s",
             sets: 2, reps: 5, holdSeconds: 5, perSide: false,
             steps: [
                 "Stand barefoot",
@@ -54,7 +43,6 @@ enum Ritual {
         ),
         Exercise(
             title: "Standing Calf Stretch",
-            subtitle: "1 set per side • 60s",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
                 "Stand near wall",
@@ -65,7 +53,6 @@ enum Ritual {
         ),
         Exercise(
             title: "Arch Massage",
-            subtitle: "1 set per side • 60s",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
                 "Sit with foot on opposite leg",

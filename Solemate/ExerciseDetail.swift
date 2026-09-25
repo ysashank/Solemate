@@ -1,10 +1,3 @@
-//
-//  ExerciseDetail.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import SwiftUI
 
 struct ExerciseDetail: View {

@@ -1,68 +1,52 @@
-
-//
-//  PlayerView.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import SwiftUI
 
 struct PlayerView: View {
-    @StateObject private var vm = PlayerViewModel()
+    @State private var vm = PlayerViewModel()
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var resumeOnActive = false
 
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 32) {
-                
-                // 1. Indicator
+
                 if (vm.phase.kind == .prep || vm.phase.kind == .restSet) {
                     Text("Coming up")
-                        .foregroundColor(.primary)
+                        .foregroundColor(.foregroundPrimary)
                 } else {
                     Text("In progress")
                         .opacity(0)
                 }
-                
-                // 2. Exercise Title -- Always show current exercise title (work) or next exercise title (prep/rest)
-                Text(getExerciseTitle())
+
+                Text(title())
                     .font(.title)
                     .multilineTextAlignment(.center)
-                    .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .gray : .primary)
-                
-                // 3. Subtitle: Show specific details (set, rep, side info)
+                    .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .foregroundSecondary : .foregroundPrimary)
+
                 VStack(spacing: 8) {
-                    ForEach(getSubtitleLines(), id: \.self) { line in
+                    ForEach(subtitleLines(), id: \.self) { line in
                         Text(line)
-                            .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .gray : .secondary)
+                            .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .foregroundSecondary : .foregroundTertiary)
                     }
                 }
 
-                // 4. Timer
                 Text(timeString(vm.remaining))
                     .font(.system(size: min(geo.size.width, geo.size.height) * 0.18,
                                   weight: .bold,
                                   design: .rounded))
                     .lineLimit(1)
                     .minimumScaleFactor(0.2)
-                    .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .yellow : .primary)
+                    .foregroundColor(timerColor)
                     .accessibilityLabel("Time remaining \(vm.remaining) seconds")
 
-                // 5. Actions
                 HStack(spacing: 40) {
                     Button {
                         vm.isRunning ? vm.pause() : vm.resume()
                     } label: {
                         Image(systemName: vm.isRunning ? "pause.fill" : "play.fill")
                             .font(.title)
-                            .foregroundColor(.gray)
-                            .frame(width: 100, height: 100)
-                            .overlay(Circle()
-                                .stroke(Color.gray, lineWidth: 1)
-                            )
-                            .clipShape(Circle())
-                            .shadow(radius: 1)
+                            .foregroundColor(.foregroundTertiary)
+                            .circleButton()
                     }
                     .disabled(vm.isDone)
 
@@ -72,13 +56,8 @@ struct PlayerView: View {
                     } label: {
                         Image(systemName: "stop.fill")
                             .font(.title)
-                            .foregroundColor(.gray)
-                            .frame(width: 100, height: 100)
-                            .overlay(Circle()
-                                .stroke(Color.gray, lineWidth: 1)
-                            )
-                            .clipShape(Circle())
-                            .shadow(radius: 1)
+                            .foregroundColor(.foregroundTertiary)
+                            .circleButton()
                     }
                 }
                 .padding(.vertical, 24)
@@ -86,7 +65,12 @@ struct PlayerView: View {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .onAppear { vm.start() }
+        .onAppear { ScreenManager.disableScreenSleep(); vm.start() }
+        .onDisappear { ScreenManager.enableScreenSleep() }
+        .onChange(of: scenePhase) { _, p in
+            if p == .background, vm.isRunning { resumeOnActive = true; vm.pause() }
+            else if p == .active, resumeOnActive { resumeOnActive = false; vm.resume() }
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -95,90 +79,38 @@ struct PlayerView: View {
         }
     }
 
-    private func getExerciseTitle() -> String {
+    private var timerColor: Color {
         switch vm.phase.kind {
-        case .prep, .restSet:
-            return vm.phase.nextTitle ?? vm.phase.exercise.title
-        case .work:
-            return vm.phase.exercise.title
-        case .done:
-            return "Complete"
+        case .prep: .timerPrep
+        case .restSet: .timerRest
+        default: .foregroundPrimary
         }
     }
-    
-    private func getSubtitleLines() -> [String] {
-        var lines: [String] = []
-        
+
+    private func title() -> String {
+        vm.phase.kind == .done ? "Complete" : vm.phase.exercise.title
+    }
+
+    private func subtitleLines() -> [String] {
+        let p: Phase?
         switch vm.phase.kind {
-        case .work:
-            // Show current work phase details
-            if let side = vm.phase.side {
-                lines.append("\(side) side")
-            }
-            
-            if vm.phase.set > 0 {
-                var setLine = "Set \(vm.phase.set) of \(vm.phase.exercise.sets)"
-                if let rep = vm.phase.rep, let totalReps = vm.phase.exercise.reps {
-                    setLine += " • Rep \(rep) of \(totalReps)"
-                }
-                lines.append(setLine)
-            } else if let rep = vm.phase.rep, let totalReps = vm.phase.exercise.reps {
-                lines.append("Rep \(rep) of \(totalReps)")
-            }
-            
-        case .prep, .restSet:
-            // Show next work phase details
-            let nextPhaseInfo = getNextPhaseInfo()
-            if let nextSide = nextPhaseInfo.side {
-                lines.append("\(nextSide) side")
-            }
-            
-            if let nextSetInfo = nextPhaseInfo.setInfo {
-                var setLine = nextSetInfo
-                if let nextRep = nextPhaseInfo.rep, let nextPhase = getNextWorkPhase(), let totalReps = nextPhase.exercise.reps {
-                    setLine += " • Rep \(nextRep) of \(totalReps)"
-                }
-                lines.append(setLine)
-            } else if let nextRep = nextPhaseInfo.rep, let nextPhase = getNextWorkPhase(), let totalReps = nextPhase.exercise.reps {
-                lines.append("Rep \(nextRep) of \(totalReps)")
-            }
-            
-        case .done:
-            break
+        case .work: p = vm.phase
+        case .prep, .restSet: p = nextWorkPhase()
+        case .done: p = nil
         }
-        
+        guard let p else { return [] }
+        var lines: [String] = []
+        if let side = p.side { lines.append("\(side) side") }
+        var line = p.set > 0 ? "Set \(p.set) of \(p.exercise.sets)" : ""
+        if let rep = p.rep, let total = p.exercise.reps {
+            line += line.isEmpty ? "Rep \(rep) of \(total)" : " • Rep \(rep) of \(total)"
+        }
+        if !line.isEmpty { lines.append(line) }
         return lines
     }
-    
-    private func getNextWorkPhase() -> Phase? {
-        let nextIndex = vm.index + 1
-        guard nextIndex < vm.phases.count else { return nil }
-        
-        // Find the next work phase
-        for i in nextIndex..<vm.phases.count {
-            if vm.phases[i].kind == .work {
-                return vm.phases[i]
-            }
-        }
-        return nil
-    }
-    
-    private func getNextPhaseInfo() -> (side: String?, rep: Int?, setInfo: String?) {
-        let nextWorkPhase = getNextWorkPhase()
-        
-        var side: String? = nil
-        var rep: Int? = nil
-        var setInfo: String? = nil
-        
-        if let nextPhase = nextWorkPhase {
-            side = nextPhase.side
-            rep = nextPhase.rep
-            if nextPhase.set > 0 {
-                setInfo = "Set \(nextPhase.set) of \(nextPhase.exercise.sets)"
-            }
-        }
-        
-        return (side: side, rep: rep, setInfo: setInfo)
+
+    private func nextWorkPhase() -> Phase? {
+        vm.phases[min(vm.index + 1, vm.phases.count)...].first { $0.kind == .work }
     }
 
     private func timeString(_ s: Int) -> String {

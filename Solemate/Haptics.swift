@@ -1,16 +1,19 @@
-//
-//  Haptics.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import UIKit
 
+@MainActor
 enum Haptics {
-    private static let generator = UINotificationFeedbackGenerator()
+    private static let generator = UIImpactFeedbackGenerator(style: .heavy)
 
-    static func prepare() { generator.prepare() }
-    static func start()   { generator.notificationOccurred(.success) } // set start
-    static func end()     { generator.notificationOccurred(.warning) } // set end
+    static func tap() {
+        generator.prepare()
+        generator.impactOccurred()
+    }
+
+    static func doubleTap() {
+        tap()
+        Task {
+            try? await Task.sleep(for: .seconds(0.15))
+            generator.impactOccurred()
+        }
+    }
 }

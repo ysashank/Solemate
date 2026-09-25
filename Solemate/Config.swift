@@ -1,15 +1,10 @@
-//
-//  Config.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import Foundation
 
 enum Config {
     static let prepSeconds = 5
     static let restBetweenSets = 5
     static let startOnRightSide = true
-    static let enableHardBackgroundAudio = false
+    // Terminal countdown. Breathwork cues every 5th remaining second instead; the alarm is the
+    // one deliberate iOS departure, and HoldTimer uses the same window.
+    static let warnSeconds = 5
 }

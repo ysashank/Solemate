@@ -1,134 +1,88 @@
-//
-//  PlayerViewModel.swift
-//  Solemate
-//
-//  Created by sashank.yalamanchili on 31.08.25.
-//
-
 import Foundation
+import Observation
 
-final class PlayerViewModel: ObservableObject {
-    @Published private(set) var phases: [Phase] = []
-    @Published private(set) var index: Int = 0
-    @Published private(set) var remaining: Int = 0
-    @Published private(set) var isRunning: Bool = false
-    @Published private(set) var isDone: Bool = false
+@MainActor
+@Observable
+final class PlayerViewModel {
+    private(set) var phases: [Phase] = []
+    private(set) var index: Int = 0
+    private(set) var remaining: Int = 0
+    private(set) var isRunning: Bool = false
+    private(set) var isDone: Bool = false
 
+    private let exercises: [Exercise]
+    private let cues: Cues
     private var timer: DispatchSourceTimer?
-    private var activeSeconds: Int = 0 // only work phases
-    private var isNewPhase: Bool = true // track if we just entered this phase
+    private var startedAt: Date?
 
-    init() { reset() }
+    init(exercises: [Exercise] = Ritual.exercises, cues: Cues = SessionCues()) {
+        self.exercises = exercises
+        self.cues = cues
+        reset()
+    }
 
     func reset() {
-        phases = TimelineBuilder.build(from: Ritual.exercises)
+        phases = TimelineBuilder.build(from: exercises)
         index = 0
         isDone = false
         remaining = phases.first?.seconds ?? 0
-        isNewPhase = true
-        activeSeconds = 0
+        startedAt = nil
     }
 
     func start() {
         guard !isRunning else { return }
+        cues.prepare()
         isRunning = true
-        BackgroundTask.begin()
+        if startedAt == nil { startedAt = Date(); enter() }
         scheduleTimer()
     }
 
     func pause() {
         isRunning = false
         timer?.cancel(); timer = nil
-        BackgroundTask.end()
     }
 
     func resume() { start() }
 
     func stop() {
         pause()
+        cues.release()
         reset()
     }
 
     private func scheduleTimer() {
         let t = DispatchSource.makeTimerSource(queue: .main)
         t.schedule(deadline: .now() + 1, repeating: 1, leeway: .milliseconds(50))
-        t.setEventHandler { [weak self] in self?.tick() }
+        t.setEventHandler { [weak self] in MainActor.assumeIsolated { self?.tick() } }
         t.resume()
         timer = t
     }
 
     private func tick() {
         guard isRunning else { return }
-        
-        // Decrement first (so sounds align with what will be displayed)
         remaining -= 1
-        
-        // Account for elapsed work time
-        if phase.kind == .work && remaining >= 0 {
-            activeSeconds += 1
-        }
-        
-        // Check if we need to transition to next phase
-        if remaining < 0 {
-            // Move to next phase
+        if remaining <= 0 {
+            if phase.kind == .work { cues.tick(.end) }
             index += 1
-            if index >= phases.count {
-                finish()
-                return
-            }
+            if index >= phases.count { finish(); return }
             remaining = phases[index].seconds
-            isNewPhase = true
+            enter()
+            return
         }
-        
-        // Now play sounds based on what's about to be displayed
-        let current = phase
-        switch current.kind {
-        case .prep, .restSet:
-            // Warn sound for each second
-            if remaining > 0 {
-                SoundFX.shared.playWarn()
-            }
-            
-        case .work:
-            // Start sound/haptic when entering work phase
-            if isNewPhase && remaining >= 0 {
-                Haptics.prepare()
-                SoundFX.shared.playStart()
-                Haptics.start()
-                isNewPhase = false
-            }
-            // End sound when hitting 0 (last second of work)
-            else if remaining == 0 {
-                SoundFX.shared.playEnd()
-                Haptics.end()
-            }
-            // Warn for seconds 5, 4, 3, 2, 1 (not 0)
-            else if remaining <= 4 && remaining > 0 {
-                SoundFX.shared.playWarn()
-            }
-            
-        case .done:
-            break
-        }
-        
-        if isNewPhase && current.kind != .work {
-            isNewPhase = false
-        }
+        if remaining <= Config.warnSeconds { cues.tick(.warn) }
+    }
+
+    private func enter() {
+        guard phase.kind == .work else { return }
+        cues.tick(.start)
     }
 
     private func finish() {
         pause()
+        cues.release()
         isDone = true
-        Health.storeCompletedWorkout(duration: activeSeconds)
+        Health.storeCompletedWorkout(start: startedAt ?? Date(), end: Date())
     }
 
     var phase: Phase { phases[min(index, phases.count - 1)] }
-
-    var exerciseProgress: Double {
-        let ex = phase.exercise
-        let idx = index
-        let totalWork = phases.filter { $0.exercise == ex && $0.kind == .work }.count
-        let doneWork  = phases.prefix(idx).filter { $0.exercise == ex && $0.kind == .work }.count
-        return totalWork == 0 ? 0 : Double(doneWork) / Double(totalWork)
-    }
 }
