@@ -11,11 +11,11 @@ final class PlayerViewModel {
     private(set) var isDone: Bool = false
 
     private let exercises: [Exercise]
-    private let cues: Cues
-    private var timer: DispatchSourceTimer?
+    private let cues: any Cues
+    private var timer: (any DispatchSourceTimer)?
     private var startedAt: Date?
 
-    init(exercises: [Exercise] = Ritual.exercises, cues: Cues = SessionCues()) {
+    init(exercises: [Exercise] = Ritual.exercises, cues: any Cues = SessionCues()) {
         self.exercises = exercises
         self.cues = cues
         reset()

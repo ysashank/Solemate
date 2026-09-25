@@ -29,7 +29,7 @@ enum Health {
         }
     }
 
-    nonisolated private static func log(_ error: Error?) {
+    nonisolated private static func log(_ error: (any Error)?) {
         if let error { print("Health: \(error)") }
     }
 }
