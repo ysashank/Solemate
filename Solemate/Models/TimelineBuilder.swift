@@ -1,6 +1,6 @@
 import Foundation
 
-struct TimelineBuilder {
+nonisolated struct TimelineBuilder {
     static func build(from list: [Exercise]) -> [Phase] {
         var phases: [Phase] = []
         for ex in list {
@@ -19,9 +19,6 @@ struct TimelineBuilder {
                     }
                 }
             }
-        }
-        if let last = list.last {
-            phases.append(Phase(kind: .done, exercise: last, set: 0, rep: nil, side: nil, seconds: 0))
         }
         return phases
     }

@@ -2,31 +2,27 @@ import SwiftUI
 
 struct PlayerView: View {
     @State private var vm = PlayerViewModel()
+    @State private var resumeOnActive = false
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @State private var resumeOnActive = false
 
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 32) {
+                Text(isBreak ? "Coming up" : "In progress")
+                    .foregroundStyle(Color.foregroundSecondary)
+                    .opacity(isBreak ? 1 : 0)
+                    .accessibilityHidden(!isBreak)
 
-                if (vm.phase.kind == .prep || vm.phase.kind == .restSet) {
-                    Text("Coming up")
-                        .foregroundColor(.foregroundPrimary)
-                } else {
-                    Text("In progress")
-                        .opacity(0)
-                }
-
-                Text(title())
+                Text(title)
                     .font(.title)
                     .multilineTextAlignment(.center)
-                    .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .foregroundSecondary : .foregroundPrimary)
+                    .foregroundStyle(isBreak ? Color.foregroundSecondary : Color.foregroundPrimary)
 
                 VStack(spacing: 8) {
                     ForEach(subtitleLines(), id: \.self) { line in
                         Text(line)
-                            .foregroundColor((vm.phase.kind == .prep || vm.phase.kind == .restSet) ? .foregroundSecondary : .foregroundTertiary)
+                            .foregroundStyle(isBreak ? Color.foregroundSecondary : Color.foregroundTertiary)
                     }
                 }
 
@@ -36,8 +32,9 @@ struct PlayerView: View {
                                   design: .rounded))
                     .lineLimit(1)
                     .minimumScaleFactor(0.2)
-                    .foregroundColor(timerColor)
-                    .accessibilityLabel("Time remaining \(vm.remaining) seconds")
+                    .foregroundStyle(isBreak ? Color.timerRest : Color.foregroundPrimary)
+                    .monospacedDigit()
+                    .accessibilityLabel("\(vm.remaining) seconds remaining, \(title)")
 
                 HStack(spacing: 40) {
                     Button {
@@ -45,10 +42,10 @@ struct PlayerView: View {
                     } label: {
                         Image(systemName: vm.isRunning ? "pause.fill" : "play.fill")
                             .font(.title)
-                            .foregroundColor(.foregroundTertiary)
+                            .foregroundStyle(Color.foregroundTertiary)
                             .circleButton()
                     }
-                    .disabled(vm.isDone)
+                    .accessibilityLabel(vm.isRunning ? "Pause" : "Resume")
 
                     Button {
                         vm.stop()
@@ -56,48 +53,47 @@ struct PlayerView: View {
                     } label: {
                         Image(systemName: "stop.fill")
                             .font(.title)
-                            .foregroundColor(.foregroundTertiary)
+                            .foregroundStyle(Color.foregroundTertiary)
                             .circleButton()
                     }
+                    .accessibilityLabel("Stop ritual")
                 }
                 .padding(.vertical, 24)
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .onAppear { ScreenManager.disableScreenSleep(); vm.start() }
+        .onAppear { ScreenManager.disableScreenSleep(); Health.ensureAuthorizationIfNeeded(); vm.start() }
         .onDisappear { ScreenManager.enableScreenSleep() }
         .onChange(of: scenePhase) { _, p in
             if p == .background, vm.isRunning { resumeOnActive = true; vm.pause() }
             else if p == .active, resumeOnActive { resumeOnActive = false; vm.resume() }
         }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if vm.isDone { Text("Complete") }
+        .sensoryFeedback(trigger: vm.feedback) { _, new in
+            switch new.kind {
+            case .start: .impact(weight: .heavy)
+            case .end: .success
+            case .warn: nil
             }
         }
-    }
-
-    private var timerColor: Color {
-        switch vm.phase.kind {
-        case .prep: .timerPrep
-        case .restSet: .timerRest
-        default: .foregroundPrimary
+        .fullScreenCover(item: Binding(get: { vm.completion.map(Completed.init) }, set: { _ in })) { done in
+            CompletionView(completion: done.value) { dismiss() }
         }
+        .navigationBarBackButtonHidden()
     }
 
-    private func title() -> String {
-        vm.phase.kind == .done ? "Complete" : vm.phase.exercise.title
+    private struct Completed: Identifiable {
+        let value: SessionCompletion
+        var id: Date { value.completedAt }
+        init(_ value: SessionCompletion) { self.value = value }
     }
+
+    private var isBreak: Bool { vm.phase.kind != .work }
+
+    private var title: String { vm.phase.exercise.title }
 
     private func subtitleLines() -> [String] {
-        let p: Phase?
-        switch vm.phase.kind {
-        case .work: p = vm.phase
-        case .prep, .restSet: p = nextWorkPhase()
-        case .done: p = nil
-        }
+        let p: Phase? = vm.phase.kind == .work ? vm.phase : nextWorkPhase()
         guard let p else { return [] }
         var lines: [String] = []
         if let side = p.side { lines.append("\(side) side") }
@@ -114,11 +110,6 @@ struct PlayerView: View {
     }
 
     private func timeString(_ s: Int) -> String {
-        let m = s / 60, r = s % 60
-        return String(format: "%02d:%02d", m, r)
+        String(format: "%02d:%02d", s / 60, s % 60)
     }
-}
-
-#Preview {
-    PlayerView()
 }

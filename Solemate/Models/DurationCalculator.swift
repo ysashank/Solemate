@@ -1,6 +1,6 @@
 import Foundation
 
-enum DurationCalculator {
+nonisolated enum DurationCalculator {
     static func calculateTotalDuration(for exercises: [Exercise]) -> Int {
         TimelineBuilder.build(from: exercises).reduce(0) { $0 + $1.seconds }
     }

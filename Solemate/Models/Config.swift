@@ -1,6 +1,6 @@
 import Foundation
 
-enum Config {
+nonisolated enum Config {
     static let prepSeconds = 5
     static let restBetweenSets = 5
     static let startOnRightSide = true

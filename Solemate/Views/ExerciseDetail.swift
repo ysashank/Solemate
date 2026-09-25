@@ -10,12 +10,13 @@ struct ExerciseDetail: View {
                     HStack(alignment: .firstTextBaseline, spacing: 12) {
                         Text("\(index + 1)")
                             .font(.body.monospacedDigit())
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.foregroundSecondary)
                             .frame(width: 28, alignment: .trailing)
                             .accessibilityHidden(true)
 
                         Text(step)
                             .font(.body)
+                            .foregroundStyle(Color.foregroundPrimary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))
@@ -24,7 +25,7 @@ struct ExerciseDetail: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(ex.subtitle)
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.foregroundSecondary)
                 }
                 .textCase(nil)
                 .padding(.top, 4)

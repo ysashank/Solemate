@@ -1,8 +1,9 @@
 import Foundation
 
-enum Ritual {
+nonisolated enum Ritual {
     static let exercises: [Exercise] = [
         Exercise(
+            id: "plantar_arch_stretch",
             title: "Plantar Arch Stretch",
             sets: 2, reps: nil, holdSeconds: 30, perSide: true,
             steps: [
@@ -13,6 +14,7 @@ enum Ritual {
             ]
         ),
         Exercise(
+            id: "toe_spread_curl",
             title: "Toe Spread + Curl",
             sets: 1, reps: 5, holdSeconds: 5, perSide: true,
             steps: [
@@ -22,6 +24,7 @@ enum Ritual {
             ]
         ),
         Exercise(
+            id: "toe_drawing",
             title: "Toe Drawing (A–E)",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
@@ -32,6 +35,7 @@ enum Ritual {
             ]
         ),
         Exercise(
+            id: "short_foot_drill",
             title: "Short Foot Drill",
             sets: 2, reps: 5, holdSeconds: 5, perSide: false,
             steps: [
@@ -42,6 +46,7 @@ enum Ritual {
             ]
         ),
         Exercise(
+            id: "standing_calf_stretch",
             title: "Standing Calf Stretch",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
@@ -52,6 +57,7 @@ enum Ritual {
             ]
         ),
         Exercise(
+            id: "arch_massage",
             title: "Arch Massage",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [

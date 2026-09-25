@@ -1,7 +1,7 @@
 import Foundation
 
-struct Exercise: Identifiable, Equatable, Hashable {
-    let id = UUID()
+nonisolated struct Exercise: Identifiable, Equatable, Hashable {
+    let id: String
     let title: String
     let sets: Int
     let reps: Int?
@@ -17,13 +17,19 @@ struct Exercise: Identifiable, Equatable, Hashable {
     }
 }
 
-enum PhaseKind { case prep, work, restSet, done }
+nonisolated enum PhaseKind { case prep, work, restSet }
 
-struct Phase {
+nonisolated struct Phase {
     let kind: PhaseKind
     let exercise: Exercise
     let set: Int
     let rep: Int?
     let side: String?
     let seconds: Int
+}
+
+struct SessionCompletion {
+    let duration: TimeInterval
+    let completedAt: Date
+    let exerciseCount: Int
 }
