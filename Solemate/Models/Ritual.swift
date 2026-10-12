@@ -25,11 +25,11 @@ nonisolated enum Ritual {
         ),
         Exercise(
             id: "toe_drawing",
-            title: "Toe Drawing (A–E)",
+            title: "Toe Drawing (A to E)",
             sets: 1, reps: nil, holdSeconds: 60, perSide: true,
             steps: [
                 "Lift foot off ground",
-                "Use big toe to “draw” A–E in the air",
+                "Use big toe to “draw” A to E in the air",
                 "Move only the ankle",
                 "Keep motion slow and controlled"
             ]

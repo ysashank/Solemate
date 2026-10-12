@@ -6,7 +6,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                Text("Daily ritual to heal your Plantar Fasciitis")
+                Text("Daily ritual to heal your plantar fasciitis")
                     .foregroundStyle(Color.foregroundSecondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
